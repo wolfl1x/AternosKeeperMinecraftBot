@@ -19,7 +19,7 @@ Aternos free servers automatically shut down when no players are online. This bo
 1. **Clone the repository**
    ```bash
    git clone https://github.com/wolfl1x/AternosKeeperMinecraftBot.git
-   cd minecraft-aternos-keeper
+   cd AternosKeeperMinecraftBot
 
 Install dependencies
 bash
