@@ -37,12 +37,13 @@ npm install
 ### 3. Configure the bot
 
 Open bot.js and edit the server settings:
-
+```
 const SERVER_CONFIG = {
     host: 'your-server.aternos.me', // Your Aternos server address
     port: 25565,                    // Server port
     username: 'ServerKeeper'        // Bot username
 };
+```
 
 ### 🚀 Usage
 
