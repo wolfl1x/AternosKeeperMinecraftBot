@@ -8,155 +8,98 @@ class MinecraftBot {
             host: host,
             port: port,
             username: username,
-            auth: 'offline' // Для cracked серверов
+            auth: 'offline'
         };
         
         this.bot = null;
         this.isConnected = false;
         this.reconnectAttempts = 0;
         this.maxReconnectAttempts = 10;
-        this.chatEnabled = true; // Флаг для включения/выключения чата
         
         this.setupEventHandlers();
     }
     
     setupEventHandlers() {
         process.on('SIGINT', () => {
-            console.log('🛑 Получен сигнал прерывания...');
+            console.log('🛑 Received interrupt signal...');
             this.disconnect();
             process.exit(0);
         });
         
         process.on('unhandledRejection', (error) => {
-            console.error('💥 Необработанное исключение:', error);
+            console.error('💥 Unhandled exception:', error);
         });
     }
     
     connect() {
-        console.log(`🔗 Подключаемся к ${this.config.host}:${this.config.port}...`);
+        console.log(`🔗 Connecting to ${this.config.host}:${this.config.port}...`);
         
         try {
             this.bot = mineflayer.createBot(this.config);
             this.setupBotEvents();
             
         } catch (error) {
-            console.error('❌ Ошибка создания бота:', error);
+            console.error('❌ Bot creation error:', error);
             this.scheduleReconnect();
         }
     }
     
     setupBotEvents() {
-        // Событие успешного подключения
         this.bot.on('login', () => {
-            console.log('✅ Успешный вход на сервер!');
+            console.log('✅ Successfully logged into server!');
             this.isConnected = true;
             this.reconnectAttempts = 0;
         });
         
-        // Событие спавна в мире
         this.bot.on('spawn', () => {
-            console.log('📍 Бот заспавнился в мире');
+            console.log('📍 Bot spawned in world');
             
-            // Загружаем плагин pathfinder для движения
             this.bot.loadPlugin(pathfinder);
             
-            // Начинаем активность
             this.startActivityCycle();
         });
         
-        // Событие ошибки
         this.bot.on('error', (error) => {
-            console.error('💥 Ошибка бота:', error);
+            console.error('💥 Bot error:', error);
             this.isConnected = false;
         });
         
-        // Событие отключения
         this.bot.on('end', (reason) => {
-            console.log(`🔌 Отключились от сервера: ${reason}`);
+            console.log(`🔌 Disconnected from server: ${reason}`);
             this.isConnected = false;
             this.scheduleReconnect();
         });
         
-        // Событие получения сообщения в чат
         this.bot.on('message', (message) => {
             const text = message.toString().trim();
-            console.log(`💬 Чат: ${text}`);
-            
-            // Обработка команды .nomessage
-            if (text.toLowerCase().startsWith('.nomessage')) {
-                this.handleNoMessageCommand(text);
-                return;
-            }
-            
-            // Включение чата обратно
-            if (text.toLowerCase().startsWith('.message')) {
-                this.handleMessageCommand(text);
-                return;
-            }
-            
-            // Отвечаем на приветствия (только если чат включен)
-            if (this.chatEnabled && text.toLowerCase().includes('привет') && text.toLowerCase().includes(this.config.username.toLowerCase())) {
-                this.sendChatMessage('Привет! Я поддерживаю сервер онлайн!');
-            }
+            console.log(`💬 Chat: ${text}`);
         });
         
-        // Событие смерти
         this.bot.on('death', () => {
-            console.log('💀 Бот умер...');
+            console.log('💀 Bot died...');
             setTimeout(() => {
                 if (this.bot && this.isConnected) {
-                    console.log('🔄 Попытка возрождения...');
+                    console.log('🔄 Attempting respawn...');
                     this.bot.chat('/spawn');
                 }
             }, 3000);
         });
         
-        // Событие кика
         this.bot.on('kicked', (reason) => {
-            console.log(`🚫 Бота кикнули: ${reason}`);
+            console.log(`🚫 Bot was kicked: ${reason}`);
             this.scheduleReconnect();
         });
     }
     
-    handleNoMessageCommand(text) {
-        this.chatEnabled = false;
-        console.log('🔇 Авто-сообщения в чат отключены');
-        
-        // Отправляем подтверждение в чат
-        if (this.bot && this.isConnected) {
-            this.bot.chat('🔇 Авто-сообщения отключены. Используйте .message чтобы включить обратно.');
-        }
-    }
-    
-    handleMessageCommand(text) {
-        this.chatEnabled = true;
-        console.log('🔊 Авто-сообщения в чат включены');
-        
-        // Отправляем подтверждение в чат
-        if (this.bot && this.isConnected) {
-            this.bot.chat('🔊 Авто-сообщения включены. Используйте .nomessage чтобы отключить.');
-        }
-    }
-    
     startActivityCycle() {
-        console.log('🎮 Начинаем цикл активности...');
-        console.log('💡 Команды: .nomessage - выключить чат, .message - включить чат');
+        console.log('🎮 Starting activity cycle...');
         
-        // Основной цикл активности каждые 30-60 секунд
         this.activityInterval = setInterval(() => {
             if (!this.isConnected || !this.bot) return;
             
             this.performRandomActivity();
             
-        }, 30000 + Math.random() * 30000); // 30-60 секунд
-        
-        // Случайные сообщения в чат каждые 2-5 минут (только если чат включен)
-        this.chatInterval = setInterval(() => {
-            if (!this.isConnected || !this.bot || !this.chatEnabled) return;
-            
-            this.sendRandomMessage();
-            
-        }, 120000 + Math.random() * 180000); // 2-5 минут
+        }, 30000 + Math.random() * 30000);
     }
     
     performRandomActivity() {
@@ -180,7 +123,7 @@ class MinecraftBot {
             setTimeout(() => {
                 if (this.bot) this.bot.setControlState('jump', false);
             }, 500);
-            console.log('🦘 Бот прыгнул');
+            console.log('🦘 Bot jumped');
         }
     }
     
@@ -189,7 +132,7 @@ class MinecraftBot {
             const yaw = Math.random() * Math.PI * 2;
             const pitch = (Math.random() - 0.5) * Math.PI;
             this.bot.look(yaw, pitch, false);
-            console.log('👀 Бот осмотрелся');
+            console.log('👀 Bot looked around');
         }
     }
     
@@ -199,7 +142,7 @@ class MinecraftBot {
             setTimeout(() => {
                 if (this.bot) this.bot.setControlState('sneak', false);
             }, 2000);
-            console.log('🦝 Бот присел');
+            console.log('🦝 Bot sneaked');
         }
     }
     
@@ -216,54 +159,27 @@ class MinecraftBot {
             }
         }, 1000);
         
-        console.log(`🚶 Бот пошел ${direction}`);
+        console.log(`🚶 Bot moved ${direction}`);
     }
     
     switchItem() {
         if (this.bot && this.bot.inventory) {
             const selectedSlot = Math.floor(Math.random() * 9);
             this.bot.setQuickBarSlot(selectedSlot);
-            console.log(`🔄 Бот переключил слот на ${selectedSlot}`);
-        }
-    }
-    
-    sendRandomMessage() {
-        // Проверяем, включен ли чат
-        if (!this.chatEnabled) return;
-        
-        const messages = [
-            "Сервер активен! 🌟",
-            "Привет всем игрокам! 👋",
-            "Как ваши дела? 😊",
-            "Красивый сервер! 🏰",
-            "Поддерживаю сервер онлайн! ⚡",
-            "Хорошего дня! ☀️",
-            "Отличный сервер для игры! 🎮",
-            "Погода сегодня отличная! ⛅"
-        ];
-        
-        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-        this.sendChatMessage(randomMessage);
-    }
-    
-    sendChatMessage(message) {
-        // Всегда проверяем флаг перед отправкой сообщения
-        if (this.bot && this.isConnected && this.chatEnabled) {
-            this.bot.chat(message);
-            console.log(`💬 Бот написал: ${message}`);
+            console.log(`🔄 Bot switched to slot ${selectedSlot}`);
         }
     }
     
     scheduleReconnect() {
         if (this.reconnectAttempts >= this.maxReconnectAttempts) {
-            console.log('🚫 Достигнуто максимальное количество попыток переподключения');
+            console.log('🚫 Maximum reconnection attempts reached');
             return;
         }
         
         this.reconnectAttempts++;
-        const delay = Math.min(30000 * this.reconnectAttempts, 300000); // Макс 5 минут
+        const delay = Math.min(30000 * this.reconnectAttempts, 300000);
         
-        console.log(`🔄 Попытка переподключения ${this.reconnectAttempts}/${this.maxReconnectAttempts} через ${delay/1000}сек...`);
+        console.log(`🔄 Reconnection attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts} in ${delay/1000}sec...`);
         
         setTimeout(() => {
             this.connect();
@@ -271,10 +187,9 @@ class MinecraftBot {
     }
     
     disconnect() {
-        console.log('🔌 Отключаем бота...');
+        console.log('🔌 Disconnecting bot...');
         
         if (this.activityInterval) clearInterval(this.activityInterval);
-        if (this.chatInterval) clearInterval(this.chatInterval);
         
         if (this.bot) {
             this.bot.quit();
@@ -285,19 +200,16 @@ class MinecraftBot {
     }
 }
 
-// Конфигурация
 const SERVER_CONFIG = {
-    host: 'kloposu.aternos.me', // Замените на ваш сервер
-    port: 37194, // Замените на ваш порт
-    username: 'AternosKeeper' // Имя бота
+    host: 'name.aternos.me', //Change name server
+    port: 37194,             //Change your server port
+    username: 'AternosKeeper'
 };
 
-// Запуск бота
-console.log('🚀 Запуск Minecraft бота для Aternos...');
-console.log(`🎯 Сервер: ${SERVER_CONFIG.host}:${SERVER_CONFIG.port}`);
-console.log(`🤖 Имя бота: ${SERVER_CONFIG.username}`);
-console.log('💡 Команды в чате: .nomessage - выключить авто-чат, .message - включить авто-чат');
-console.log('⏹️  Для остановки нажмите Ctrl+C\n');
+console.log('🚀 Starting Minecraft bot for Aternos...');
+console.log(`🎯 Server: ${SERVER_CONFIG.host}:${SERVER_CONFIG.port}`);
+console.log(`🤖 Bot name: ${SERVER_CONFIG.username}`);
+console.log('⏹️  Press Ctrl+C to stop\n');
 
 const bot = new MinecraftBot(SERVER_CONFIG.host, SERVER_CONFIG.port, SERVER_CONFIG.username);
 bot.connect();
