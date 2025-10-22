@@ -27,12 +27,13 @@ This bot joins your server and performs random actions to **prevent it from goin
 ```bash
 git clone https://github.com/wolfl1x/AternosKeeperMinecraftBot.git
 cd AternosKeeperMinecraftBot
+```
 
-2. Install dependencies
+### 2. Install dependencies
 
 npm install
 
-3. Configure the bot
+### 3. Configure the bot
 
 Open bot.js and edit the server settings:
 
