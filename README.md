@@ -30,8 +30,9 @@ cd AternosKeeperMinecraftBot
 ```
 
 ### 2. Install dependencies
-
+```bash
 npm install
+```
 
 ### 3. Configure the bot
 
@@ -43,21 +44,25 @@ const SERVER_CONFIG = {
     username: 'ServerKeeper'        // Bot username
 };
 
-🚀 Usage
+### 🚀 Usage
 
 Start using npm:
-
+```bash
 npm start
+```
 
 Or directly with Node.js:
-
+```bash
 node bot.js
+```
 
-⚙️ Configuration Options
+### ⚙️ Configuration Options
+```
 Setting	Description	Default
 host	Your Aternos server address	required
 port	Server port	25565
 username	Bot’s in-game name	AternosKeeper
+```
 🧭 Bot Activities
 
 The bot periodically performs different actions to appear human:
