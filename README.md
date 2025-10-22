@@ -1,63 +1,65 @@
-# Minecraft Aternos Keeper Bot
+# ⛏️ Minecraft Aternos Keeper Bot
 
-A Node.js bot that keeps your Minecraft server on Aternos (free hosting) active 24/7 by simulating player activity.
+A **Node.js bot** that keeps your Minecraft server on Aternos (free hosting) **running 24/7** by simulating real player activity so it doesn’t shut down.
 
-## Features
+---
 
-- 🤖 Automatically connects to your Minecraft server
-- 🎮 Performs random player activities (jumping, moving, looking around)
-- 🔄 Auto-reconnects when disconnected
+## ✅ Features
+
+- 🤖 Automatically connects to your server
+- 🎮 Simulates random player actions
+- 🔄 Auto-reconnect on disconnect
 - ⚡ Lightweight and efficient
 - 🛠️ Easy to configure
 
-## How It Works
+---
 
-Aternos free servers automatically shut down when no players are online. This bot connects to your server and performs random activities to simulate a real player, preventing the server from going offline.
+## 🧠 How It Works
 
-## Installation
+Aternos automatically stops servers when no players are online.  
+This bot joins your server and performs random actions to **prevent it from going offline**.
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/wolfl1x/AternosKeeperMinecraftBot.git
-   cd AternosKeeperMinecraftBot
+---
 
-Install dependencies
-bash
+## 📥 Installation
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/wolfl1x/AternosKeeperMinecraftBot.git
+cd AternosKeeperMinecraftBot
+
+2. Install dependencies
 
 npm install
 
-Configure your server
+3. Configure the bot
 
-    Edit bot.js and update the server configuration:
-
-javascript
+Open bot.js and edit the server settings:
 
 const SERVER_CONFIG = {
     host: 'your-server.aternos.me', // Your Aternos server address
-    port: 25565,                    // Your server port
-    username: 'ServerKeeper'        // Bot's in-game name
+    port: 25565,                    // Server port
+    username: 'ServerKeeper'        // Bot username
 };
 
-Usage
+🚀 Usage
 
-Start the bot:
-bash
+Start using npm:
 
 npm start
 
 Or directly with Node.js:
-bash
 
 node bot.js
 
-Configuration Options
+⚙️ Configuration Options
 Setting	Description	Default
-host	Your Aternos server address	Required
-port	Minecraft server port	25565
-username	Bot's in-game username	'AternosKeeper'
-Bot Activities
+host	Your Aternos server address	required
+port	Server port	25565
+username	Bot’s in-game name	AternosKeeper
+🧭 Bot Activities
 
-The bot performs various activities to appear as a real player:
+The bot periodically performs different actions to appear human:
 
     ✅ Random jumping
 
@@ -71,63 +73,75 @@ The bot performs various activities to appear as a real player:
 
     ✅ Auto-respawn on death
 
-Requirements
+🔧 Requirements
 
-    Node.js 14 or higher
+    Node.js 14+
 
     Minecraft Java Edition server
 
-    Aternos account with server
+    Aternos account
 
-Server Setup Notes
+🔒 Server Setup Notes
 
-    Enable offline mode in your Aternos server settings
+Make sure to:
 
-    Allow the bot username in your server whitelist (if enabled)
+    Enable offline mode
 
-    Ensure the server is started before running the bot
+    Whitelist the bot’s username (if using whitelist)
 
-Troubleshooting
+    Start the server before launching the bot
 
-Bot can't connect:
+    Use the correct server version
 
-    Verify server is running on Aternos
+🐛 Troubleshooting
+Bot can’t connect
 
-    Check server address and port
+    Verify the server is online on Aternos
 
-    Ensure offline mode is enabled
+    Check the address & port
 
-Bot gets kicked:
+    Enable offline mode
 
-    Add bot username to whitelist
+Bot gets kicked
+
+    Add the bot username to whitelist
 
     Check for IP bans
 
-    Verify server version compatibility
+    Verify plugin compatibility
 
-Connection issues:
+Network issues
 
     Check firewall settings
 
-    Verify network connectivity
+    Avoid VPN/proxy if possible
 
-    Ensure Aternos server is accessible
+    Verify overall connection
 
-Legal Notice
+⚠️ Legal Notice
 
-This bot is intended for personal use on servers you own. Please respect Minecraft's EULA and Aternos's terms of service. Use responsibly and only on servers you're authorized to access.
-Contributing
+This bot is intended for personal use on servers you own or have permission to manage.
+Please respect Minecraft’s EULA and Aternos Terms of Service.
+🤝 Contributing
 
-Contributions are welcome! Please feel free to submit pull requests or open issues for bugs and feature requests.
-License
+Contributions are welcome!
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-Support
+    Submit pull requests
 
-If you encounter any issues or have questions:
+    Report bugs
 
-    Check the troubleshooting section above
+    Suggest new features
+
+📜 License
+
+This project is licensed under the MIT License.
+See the LICENSE file for details.
+💬 Support
+
+If you encounter any issues:
+
+    Check the troubleshooting section
 
     Open an issue on GitHub
 
-    Ensure your Node.js and dependencies are up to date
+    Ensure Node.js and dependencies are up to date
